@@ -133,65 +133,53 @@ class Sudoku {
   var problemI = [];
   var problemJ = [];
   for (var i = 0; i < 9; i++) {
-  let tempBaris = this.sudoku[i]
-  for (var j = 0; j < tempBaris.length; j++) {
-    if (tempBaris[j] === "0") {
-      problemI.push(i)
-      problemJ.push(j)
+    let tempBaris = this.sudoku[i]
+    for (var j = 0; j < tempBaris.length; j++) {
+      if (tempBaris[j] === "0") {
+        problemI.push(i)
+        problemJ.push(j)
+      }
     }
   }
 
   for (var i = 0; i < problemI.length; i++) {
-    let number = 1;
+    let number = parseInt(this.sudoku[problemI[i]][problemJ[i]])
     let clear = this.cekClear(number.toString(), problemI[i], problemJ[i], this.sudoku)
     while(clear === false){
       number++
-      if (number > 9) {
+      if (number === 10) {
         break;
       }
       clear = this.cekClear(number.toString(), problemI[i], problemJ[i], this.sudoku)
     }
     if (clear === true) {
       this.sudoku[problemI[i]][problemJ[i]] = number
+    }else{
+      this.sudoku[problemI[i]][problemJ[i]] = "0"
+      i = i-2
     }
-    // else{
-    //   if (i === 0) {
-    //     number = Number(this.sudoku[problemI[i-1]][problemJ[i-1]])
-    //     i = 0
-    //   }else{
-    //     i = i -2
-    //   }
-    // }
-
-
   }
-
 }
-
-}
-
-
-
 
   // Returns a string representing the current state of the board
-            board() {
-              for (var i = 0; i < 9; i++) {
-                var temp = "";
-                for (var j = 0; j < 9; j++) {
-                  if (j%3 === 0) {
-                    temp += "|"
-                  }
-                  temp += this.sudoku[i][j] + " "
-                  if (j===8) {
-                    temp += "|"
-                  }
-                }
-                console.log(temp);
-                if (i === 2 || i === 5) {
-                  console.log("----------------------");
-                }
-              }
-            }
+  board() {
+    for (var i = 0; i < 9; i++) {
+      var temp = "";
+      for (var j = 0; j < 9; j++) {
+        if (j%3 === 0) {
+          temp += "|"
+        }
+        temp += this.sudoku[i][j] + " "
+        if (j===8) {
+          temp += "|"
+        }
+      }
+      console.log(temp);
+      if (i === 2 || i === 5) {
+        console.log("----------------------");
+      }
+    }
+  }
 }
 
 // The file has newlines at the end of each line,
@@ -202,10 +190,8 @@ var board_string = fs.readFileSync('set-02_project-euler_50-easy-puzzles.txt')
   .split("\n")[3]
 
 var game = new Sudoku(board_string)
-console.log("sebelum");
-game.board();
+
 
 // Remember: this will just fill out what it can and not "guess"
 game.solve()
-console.log("solving");
 game.board();
