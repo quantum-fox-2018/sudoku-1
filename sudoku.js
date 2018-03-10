@@ -15,12 +15,6 @@ class Sudoku {
     }
   }
 
-  getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-  }
-
   cekKanan(angka, indexI, indexJ, sudoku){
     var tempBaris = [];
     for (var i = 0; i < 9; i++) {
@@ -104,6 +98,7 @@ class Sudoku {
   let problem = this.findEmptyCell()
   let problemI = problem[0]
   let problemJ = problem[1]
+  var backtrack = 0;
 
   for (var i = 0; i < problemI.length; i++) {
     let number = parseInt(this.sudoku[problemI[i]][problemJ[i]])
@@ -120,8 +115,10 @@ class Sudoku {
     }else{
       this.sudoku[problemI[i]][problemJ[i]] = "0"
       i = i-2
+      backtrack++
     }
   }
+  console.log(backtrack);
 }
 
   // Returns a string representing the current state of the board
