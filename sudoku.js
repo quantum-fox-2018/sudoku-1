@@ -58,10 +58,6 @@ class Sudoku {
           numInput--;
           papanSudoku[i][j] = numInput.toString();
           objectEmpty[i+''+j] = (papanSudoku[i][j]);
-
-          if(i>=5){
-            debugger;
-          }
         }
         //Deteksi object terdekat
         while(checkBackTracking==false){
