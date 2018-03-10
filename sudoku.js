@@ -1,33 +1,44 @@
 "use strict"
-var arr = []
 
 class Sudoku {
 
   constructor(board_string) {
 
     this.boardSudoku = board_string
+    this.papanSudoku = this.board()
+    this.cariNol = this.cekNol()
 
   }
 
   solve() {
 
-      let papan = this.board()
-      let inputAngkaSudoku = this.boardSudoku
-      let validasi = true
+    let papan = this.papanSudoku
 
-    for (let i = 0; i < papan.length; i++) {
+    for(let i = 0; i < this.cariNol.length; i++) {
 
-      for (let j = 0; j < papan[i].length; j++) {
+      let baris = this.cariNol[i][0]
+      let kolom = this.cariNol[i][1]
 
-        if (papan[i][j] == 0) {
+      if(papan[baris][kolom] == 0){
 
-          for (let k = 9; k >= 0; k--) {
+        for(let num = 1; num < 10; num++) {
 
-            if (this.kotak(i, k) == true && this.samping(i, k) && this.bawah(j, k) == true) {
+          if(this.cekValue(baris, kolom, num)) {
 
-              papan[Math.floor( i / 9 )][i] = j
+            papan[baris][kolom] = num
 
-              break
+            console.log();
+            console.log(papan)
+
+            let track = this.solve()
+
+            if(track) {
+
+              return true
+
+            } else {
+
+              papan[baris][kolom] = 0
 
             }
 
@@ -35,40 +46,44 @@ class Sudoku {
 
         }
 
+        return false
+
       }
 
     }
 
-    return papan
+    return true
 
   }
 
-  kotak(index, num){
+  kotak(baris, kolom, num) {
+
+    let areaBaris = Math.floor(baris/3)*3
+    let areaKolom = Math.floor(kolom/3)*3
+
+    for(let i = 0; i < 3; i++) {
+
+      for(let j = 0; j < 3; j++) {
+
+        if(this.papanSudoku[areaBaris+i][areaKolom+j] === num) {
+
+          return false
+
+        }
+
+      }
+
+    }
+
+    return true
+
+  }
+
+  bawah(kolom, num) {
+
     let papan = this.boardSudoku
-    let x = index % 9
-    let y = Math.floor(index / 9)
 
-    index = index - (x % 3)
-    index = index - (y % 3) * 9
-
-    for (let i = index; i < index + 3; i++) {
-
-      if (papan[i] == num) {
-        return false
-      }
-    }
-
-    for (let i = index + 9; i < index + 12; i++) {
-
-      if (papan[i] == num) {
-
-        return false
-
-      }
-
-    }
-
-    for (let i = index + 18; i < index + 21; i++) {
+    for (var i = kolom; i < papan.length; i+=9) {
 
       if (papan[i] == num) {
 
@@ -82,29 +97,11 @@ class Sudoku {
 
   }
 
-  bawah(index, num){
-
-    let papan = this.boardSudoku
-
-    for (var i = index; i < papan.length; i+=9) {
-
-      if (papan[i] == num) {
-
-        return false
-
-      }
-
-    }
-
-    return true
-
-  }
-
-  samping(index, num){
+  samping(baris, num) {
 
     let papan = this.board()
 
-      if (papan[index].indexOf(num) !== -1) {
+      if (papan[baris].indexOf(num) !== -1) {
 
         return false
 
@@ -112,10 +109,11 @@ class Sudoku {
 
     return true
 
+
   }
 
-  // Returns a string representing the current state of the board
   board() {
+
     let papan = []
     let isiPapan = []
     let isi = this.boardSudoku;
@@ -135,7 +133,38 @@ class Sudoku {
 
   }
 
+  cekNol() {
+
+    let tmpPosisiNol = []
+
+    for(let i = 0; i< this.papanSudoku.length; i++) {
+
+      for(let j = 0; j < this.papanSudoku.length; j++) {
+
+        if(this.papanSudoku[i][j] === 0) {
+
+          tmpPosisiNol.push([i,j])
+
+        }
+
+      }
+
+    }
+
+    return tmpPosisiNol
+
 }
+
+  cekValue(baris, kolom, num) {
+
+    return this.samping(baris, num) && this.bawah(kolom, num) && this.kotak(baris, kolom, num)
+
+  }
+
+}
+
+  // Returns a string representing the current state of the board
+
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
@@ -145,7 +174,6 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .split("\n")[0]
 
 var game = new Sudoku(board_string)
-
 // Remember: this will just fill out what it can and not "guess"
 game.solve()
 
