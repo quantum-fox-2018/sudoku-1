@@ -18,7 +18,7 @@ class Sudoku {
       }
     }
 
-    for(let i=0;i<=6;i++){
+    for(let i=0;i<papanSudoku.length;i++){
 
       //Untuk mengisi angka
       let j=0;
@@ -54,17 +54,20 @@ class Sudoku {
 
             numInput++;
           }
+
           numInput--;
           papanSudoku[i][j] = numInput.toString();
           objectEmpty[i+''+j] = (papanSudoku[i][j]);
+
+          if(i>=5){
+            debugger;
+          }
         }
-
-
         //Deteksi object terdekat
         while(checkBackTracking==false){
 
           if(j==0){
-            j=8;
+            j=9;
             i=i-1;
           }
           j=j-1;
@@ -74,7 +77,6 @@ class Sudoku {
             papanSudoku[i][j] = '0';
             j=j-1;
           }
-
         }
         j++;
       }
