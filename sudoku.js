@@ -140,8 +140,9 @@ class Sudoku {
       problemJ.push(j)
     }
   }
-  let number = 1;
+
   for (var i = 0; i < problemI.length; i++) {
+    let number = 1;
     let clear = this.cekClear(number.toString(), problemI[i], problemJ[i], this.sudoku)
     while(clear === false){
       number++
@@ -152,15 +153,17 @@ class Sudoku {
     }
     if (clear === true) {
       this.sudoku[problemI[i]][problemJ[i]] = number
-      number = 1
-    }else{
-      if (i > 0) {
-        number = Number(this.sudoku[problemI[i-1]][problemJ[i-1]])
-        i = i
-      }else{
-        i = 0
-      }
     }
+    // else{
+    //   if (i === 0) {
+    //     number = Number(this.sudoku[problemI[i-1]][problemJ[i-1]])
+    //     i = 0
+    //   }else{
+    //     i = i -2
+    //   }
+    // }
+
+
   }
 
 }
