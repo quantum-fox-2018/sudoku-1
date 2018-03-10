@@ -7,8 +7,7 @@
 class Sudoku {
   constructor(board_string) {
     this.boardString = board_string;
-    this.emptyPosition = this.checkNolPositions();
-    this.boar = this.board();
+    // this.emptyPosition = this.checkNolPositions();
 
   }
 
@@ -76,14 +75,14 @@ class Sudoku {
   solve() {
     let limit = 9;
     let total = 0;
-    // let emptyPosition = this.checkNolPositions();
-    // let board = this.board();
+    let emptyPosition = this.checkNolPositions();
+    let board = this.board();
 
 
-    for (let i = 0; i < this.emptyPosition.length;) {
-      let row = this.emptyPosition[i][0];
-      let column = this.emptyPosition[i][1];
-      let value = this.board[row][column] + 1;
+    for (let i = 0; i < emptyPosition.length;) {
+      let row = emptyPosition[i][0];
+      let column = emptyPosition[i][1];
+      let value = board[row][column] + 1;
       let found = false;
 
       while (!found && value <= 9) {
