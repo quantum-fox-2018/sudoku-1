@@ -89,6 +89,29 @@ class Sudoku {
     }
   }
 
+  cekKotak(angka, baris, kolom){
+    var papan = this.board()
+    var barisAwal = Math.floor(baris/3)*3
+    var kolomAwal = Math.floor(kolom/3)*3
+    // console.log(angka)
+    // console.log(barisAwal)
+    // console.log(kolomAwal)
+    var kotak = []
+    for(let i=barisAwal; i<barisAwal+3; i++){
+      for(let j=kolomAwal; j<kolomAwal+3; j++){
+        // console.log(papan[i][j])
+        kotak.push(papan[i][j])
+      }
+    }
+    // console.log(kotak)
+    if(kotak.indexOf(angka)===-1){
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
 }
 
 
@@ -104,9 +127,10 @@ var game = new Sudoku(board_string)
 // Remember: this will just fill out what it can and not "guess"
 // game.solve()
 
-console.log(game.board())
-console.log('===================')
+// console.log(game.board())
+// console.log('===================')
 // console.log(game.coordinats())
 // console.log(game.cekHorizontal(angkaArgv, barisArgv))
 // console.log(game.cekVertikal(angkaArgv, kolomArgv))
-console.log(game.solve(angkaArgv, barisArgv, kolomArgv))
+console.log(game.cekKotak(angkaArgv, barisArgv, kolomArgv))
+// console.log(game.solve(angkaArgv, barisArgv, kolomArgv))
