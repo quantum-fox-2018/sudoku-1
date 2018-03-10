@@ -8,18 +8,17 @@ class Sudoku {
   solve() {
     let papanSudoku = this.board();
     let objectEmpty = {};
-    let objectArr = [];
+
     for(let i=0;i<papanSudoku.length;i++){
       for(let j=0;j<papanSudoku[i].length;j++){
-        objectArr = [];
+
         if(papanSudoku[i][j] == '0'){
-          objectArr.push('0')
-          objectEmpty[i+''+j] = objectArr;
+          objectEmpty[i+''+j] = '0';
         }
       }
     }
 
-    for(let i=0;i<papanSudoku.length;i++){
+    for(let i=0;i<=6;i++){
 
       //Untuk mengisi angka
       let j=0;
@@ -29,42 +28,39 @@ class Sudoku {
         let checkUnique = false;
         var koordinatX = i;
         var koordinatY = j;
+        var numInput = 1;
 
         if(papanSudoku[i][j] == '0'){
 
-          var numInput = 0;
+          if(checkBackTracking == true){
+            numInput = parseInt(objectEmpty[i+''+j])+1;
+          }
           while(checkUnique ==false){
             checkUnique = false;
-            if(numInput>8){
-              numInput=0;
+
+            if(numInput>9){
+              numInput=1;
               var checkBackTracking = false;
               break;
             }
-            numInput++;
 
             let horizontalValidation = this.horizontalCheck(papanSudoku,koordinatX,numInput);
             let verticalValidation = this.verticalCheck(papanSudoku,koordinatY,numInput);
-            let squareValidation = this. squareCheck(papanSudoku,koordinatX,koordinatY,numInput)
+            let squareValidation = this.squareCheck(papanSudoku,koordinatX,koordinatY,numInput)
 
             if(squareValidation == true && verticalValidation == true && horizontalValidation==true ){
               checkUnique = true;
             }
 
-            for(let k=0;k<objectEmpty[i+''+j].length;k++){
-              if(objectEmpty[i+''+j][k] == numInput.toString()){
-                checkUnique = false;
-                debugger;
-              }
-            }
-
+            numInput++;
           }
+          numInput--;
           papanSudoku[i][j] = numInput.toString();
-          objectEmpty[i+''+j].push(papanSudoku[i][j]);
+          objectEmpty[i+''+j] = (papanSudoku[i][j]);
         }
 
 
         //Deteksi object terdekat
-
         while(checkBackTracking==false){
 
           if(j==0){
@@ -76,10 +72,10 @@ class Sudoku {
           if(objectEmpty[i+''+j] != undefined){
             checkBackTracking=true;
             papanSudoku[i][j] = '0';
+            j=j-1;
           }
-          debugger;
-        }
 
+        }
         j++;
       }
     }
