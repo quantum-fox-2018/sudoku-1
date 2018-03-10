@@ -117,17 +117,17 @@ class Sudoku {
     //Cek cara backtracking
     for(let counter =0; counter<this.emptySpace.length;){
 
+      //Indicate how many times has it looped
       let loop = this.emptySpace[counter][2];
-      if(loop>=100){
+      if(loop>=20){
         this.bricked = true;
         this.emptySpace[counter][2]=0;
-        console.log("brick");
-        this.buildBoard();
         counter--;
       }
       let row = this.emptySpace[counter][0]; 
       let column = this.emptySpace[counter][1];
       
+      //Bricked is for telling if its still wrong, go back to its previous number.
       let bricked = false;
       if(bricked===true){
         this.emptySpace[counter][2]=0;
@@ -135,15 +135,16 @@ class Sudoku {
       if(bricked===true && this.loop===0){
         this.bricked = false;
       }
-      if(this.board[row][column] == '0'){
+      if(this.board[row][column] == '0'||this.board[row][column] == '9'){
+        if(this.board[row][column] == '9'){
+          this.board[row][column] = '1';       
+        }
         for(let number =1; number<=9;number++ ){
           //Check if every row, column, and the box does not contain the number
           let conditional = this.solveRow(number, row) && this.solveCol(number, column) && this.solveBox(number, row, column);
 
           if(conditional){
             this.board[row][column] = number.toString();
-            
-
             if(number === 9){
               this.emptySpace[counter][2]++;
             }
@@ -152,38 +153,11 @@ class Sudoku {
           }
           if(!conditional && number === 9){
             this.board[row][column] = '0';
-            //console.log("back");
             counter--;
             break;
           }
         }
 
-      debugger;
-      }else if(this.board[row][column] == '9'){
-        this.board[row][column] = '1';
-        for(let number =1; number<=9; number++){
-          //Check if every row, column, and the box does not contain the number
-          let conditional = this.solveRow(number, row) && this.solveCol(number, column) && this.solveBox(number, row, column);
-
-          if(conditional){
-            this.board[row][column] = number.toString();
-            if(number === 9){
-              this.emptySpace[counter][2]++;
-            }
-            counter++;
-            break;
-          }
-          if(!conditional && number === 9){
-            this.board[row][column] = '0';
-
-            // console.log("back");
-            counter--;
-            break;
-          }
-        }
-        
-
-      debugger;
       }
       else{
         for(let number = parseInt(this.board[row][column]); number<=9;number++){
@@ -196,27 +170,16 @@ class Sudoku {
               this.emptySpace[counter][2]++;
             }
             counter++;
-
-        debugger;
             break;
           }
           if(!conditional && number === 9 && counter !== 0){
             this.board[row][column] = '0';
-            // console.log(row+","+column);
-            // console.log("back");
             counter--;
-          
-        debugger;
             break;
           }
         }
-
-
       }     
-      //game.buildBoard();
-      //console.log(row+","+column);
     }
-
   }
 
   // Returns a string representing the current state of the board
