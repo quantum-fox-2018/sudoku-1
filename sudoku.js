@@ -8,10 +8,39 @@ class Sudoku {
   solve() {
     let mainBoard = this.board();
     let boardZero = this.findZeroIndex();
-    let num = 9;
-    this.horizontalChecking(mainBoard, boardZero[0][0], num);
-    this.verticalChecking(mainBoard, boardZero[0][1], num);
-    this.squareChecking(mainBoard,  boardZero[0][1], boardZero[0][0], num);
+    let num = 1;
+    let row = boardZero[0][0];
+    let column = boardZero[0][1];
+    let foundNum = false;
+    let numberOnBoard = 9;
+    this.horizontalChecking(mainBoard, row, num);
+    this.verticalChecking(mainBoard, column, num);
+    this.squareChecking(mainBoard, row, column, num);
+    this.checkAllChecker(mainBoard, column, row, num);
+    let i;
+    for (i = 0; i < boardZero.length; i++) {
+      row = boardZero[i][0];
+      column = boardZero[i][1];
+      num = boardZero[row][column] + 1;
+      foundNum = false;
+
+      while (!foundNum && num <= numberOnBoard) {
+        if (this.checkAllChecker(mainBoard, column, row, num)) {
+          foundNum = true;
+          mainBoard[row][column] = num;
+          i++;
+        } else {
+          num++;
+        }
+      }
+
+      if (!foundNum) {
+        mainBoard[row][column] = 0;
+        i--;
+      }
+    }
+
+    return console.log(mainBoard);
   }
 
   findZeroIndex() {
@@ -31,6 +60,7 @@ class Sudoku {
   }
 
   horizontalChecking(board, row, num) {
+    debugger;
     for (let i = 0; i < board.length; i++) {
       if (board[row][i] === num) {
         return false;
@@ -113,8 +143,7 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+game.solve();
 
-console.log(game.board());
-console.log('');
-console.log(game.findZeroIndex());
+// console.log(game.board());
+console.log(horizontalChecking(game.board(), 0, 2));
