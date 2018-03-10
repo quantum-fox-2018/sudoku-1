@@ -3,14 +3,31 @@
 class Sudoku {
   constructor(board_string) {}
 
-  solve() {}
+  solve(problem) {
 
-  // Returns a string representing the current state of the board
-  board() {}
+  }
+
+
+  board(board_string) {
+    var angka  = board_string.toString();
+    var arrBlock = [];
+    var tmp = [];
+    for(var i = 0 ; i < angka.length ;i++){
+      tmp.push(angka[i]);
+      if(tmp.length === 9){
+        arrBlock.push(tmp);
+        tmp=[];
+      }
+    }
+    return arrBlock;
+  }
 }
 
-// The file has newlines at the end of each line,
-// so we call split to remove it (\n)
+
+
+
+
+
 var fs = require('fs')
 var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
   .toString()
@@ -22,3 +39,6 @@ var game = new Sudoku(board_string)
 game.solve()
 
 console.log(game.board())
+
+
+// 105802000090076405200400819019007306762083090000061050007600030430020501600308900;
