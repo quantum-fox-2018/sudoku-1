@@ -95,20 +95,29 @@ class Sudoku {
     return false;
   }
 
-
-  solve() {
-
+  findEmptyCell(){
+    var problem = [];
     var problemI = [];
     var problemJ = [];
     for (var i = 0; i < 9; i++) {
-    let tempBaris = this.sudoku[i]
-    for (var j = 0; j < tempBaris.length; j++) {
-      if (tempBaris[j] === "0") {
-        problemI.push(i)
-        problemJ.push(j)
+      let tempBaris = this.sudoku[i]
+      for (var j = 0; j < tempBaris.length; j++) {
+        if (tempBaris[j] === "0") {
+          problemI.push(i)
+          problemJ.push(j)
+        }
       }
     }
+    problem.push(problemI);
+    problem.push(problemJ);
+    return problem
   }
+
+  solve() {
+  let problem = this.findEmptyCell()
+  let problemI = problem[0]
+  let problemJ = problem[1]
+
   var possibilities = [];
   for (var i = 0; i < problemI.length; i++) {
     var possibilityForOneCell = []
@@ -130,17 +139,9 @@ class Sudoku {
 
 
 //////////////////////////////////////////////////////////////////////////
-  var problemI = [];
-  var problemJ = [];
-  for (var i = 0; i < 9; i++) {
-    let tempBaris = this.sudoku[i]
-    for (var j = 0; j < tempBaris.length; j++) {
-      if (tempBaris[j] === "0") {
-        problemI.push(i)
-        problemJ.push(j)
-      }
-    }
-  }
+  problem = this.findEmptyCell()
+  problemI = problem[0]
+  problemJ = problem[1]
 
   for (var i = 0; i < problemI.length; i++) {
     let number = parseInt(this.sudoku[problemI[i]][problemJ[i]])
@@ -187,7 +188,7 @@ class Sudoku {
 var fs = require('fs')
 var board_string = fs.readFileSync('set-02_project-euler_50-easy-puzzles.txt')
   .toString()
-  .split("\n")[3]
+  .split("\n")[0]
 
 var game = new Sudoku(board_string)
 
