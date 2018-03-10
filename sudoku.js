@@ -1,10 +1,20 @@
 "use strict"
 
+var angkaArgv = Number(process.argv[2])
+var barisArgv = Number(process.argv[3])
+var kolomArgv = Number(process.argv[4])
+
 class Sudoku {
   constructor(board_string) {
   }
 
-  solve() {
+  solve(angka, baris, kolom) {
+    var horizontal = this.cekHorizontal(angka, baris)
+    var vertical = this.cekVertikal(angka, kolom)
+
+    console.log(horizontal)
+    console.log(vertical)
+
   }
 
   // Returns a string representing the current state of the board
@@ -47,13 +57,31 @@ class Sudoku {
     return Posisi
   }
 
-  cekHorizontal(angka){
+  cekHorizontal(angka, baris){
     //cek angka dibaris angka, jika -1 maka return true
     var papan = this.board()
-    console.log(papan[0])
-    console.log(angka)
-    console.log(papan[0].indexOf(angka))
-    if(papan[0].indexOf(angka)===-1){
+    // console.log(papan[baris])
+    // console.log(angka)
+    // console.log(papan[baris].indexOf(angka))
+    if(papan[baris].indexOf(angka)===-1){
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  cekVertikal(angka, kolom){
+    var papan = this.board()
+    // console.log(papan)
+    var colom = []
+    for(let i=0; i<papan.length; i++){
+      // var baris = papan[i]
+      // console.log(baris[1])
+      colom.push(papan[i][kolom])
+    }
+    // console.log(colom)
+    if(colom.indexOf(angka)===-1){
       return true
     }
     else {
@@ -63,7 +91,6 @@ class Sudoku {
 
 }
 
-var input = Number(process.argv[2])
 
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
@@ -75,9 +102,11 @@ var board_string = fs.readFileSync('set-01_sample.unsolved.txt')
 var game = new Sudoku(board_string)
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+// game.solve()
 
-// console.log('===================')
-// console.log(game.board())
+console.log(game.board())
+console.log('===================')
 // console.log(game.coordinats())
-console.log(game.cekHorizontal(input))
+// console.log(game.cekHorizontal(angkaArgv, barisArgv))
+// console.log(game.cekVertikal(angkaArgv, kolomArgv))
+console.log(game.solve(angkaArgv, barisArgv, kolomArgv))
