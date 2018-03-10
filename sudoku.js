@@ -1,6 +1,4 @@
 "use strict"
-
-
 class Sudoku {
   constructor(board_string) {
     this.sudoku = [];
@@ -16,17 +14,6 @@ class Sudoku {
       }
     }
   }
-
-  getPossibilities(titikI, titikJ, sudoku){
-    var possibilities = [];
-      for (var j = 1; j < 10; j++) {
-        if (this.cekClear(j.toString(), titikI, titikJ, sudoku)) {
-          possibilities.push(j)
-        }
-      }
-    return possibilities
-  }
-
 
   getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -118,31 +105,6 @@ class Sudoku {
   let problemI = problem[0]
   let problemJ = problem[1]
 
-  var possibilities = [];
-  for (var i = 0; i < problemI.length; i++) {
-    var possibilityForOneCell = []
-    for (var j = 1; j < 10; j++) {
-      if (this.cekClear(j.toString(), problemI[i], problemJ[i], this.sudoku)) {
-        possibilityForOneCell.push(j)
-      }
-    }
-
-    possibilities.push(possibilityForOneCell)
-  }
-  //isi kotak yang hanya punya 1 possibility
-  for (var i = 0; i < possibilities.length; i++) {
-    if (possibilities[i].length === 1) {
-      this.sudoku[problemI[i]][problemJ[i]] = possibilities[i][0]
-      possibilities[i].splice(0,1)
-    }
-  }
-
-
-//////////////////////////////////////////////////////////////////////////
-  problem = this.findEmptyCell()
-  problemI = problem[0]
-  problemJ = problem[1]
-
   for (var i = 0; i < problemI.length; i++) {
     let number = parseInt(this.sudoku[problemI[i]][problemJ[i]])
     let clear = this.cekClear(number.toString(), problemI[i], problemJ[i], this.sudoku)
@@ -186,13 +148,13 @@ class Sudoku {
 // The file has newlines at the end of each line,
 // so we call split to remove it (\n)
 var fs = require('fs')
-var board_string = fs.readFileSync('set-02_project-euler_50-easy-puzzles.txt')
+var board_string = fs.readFileSync("set-01_sample.unsolved.txt")
   .toString()
-  .split("\n")[0]
+  .split("\n")[13]
 
 var game = new Sudoku(board_string)
 
 
 // Remember: this will just fill out what it can and not "guess"
-game.solve()
+game.solve();
 game.board();
