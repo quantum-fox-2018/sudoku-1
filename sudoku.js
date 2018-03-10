@@ -23,12 +23,12 @@ class Sudoku {
 
         for(let num = 1; num < 10; num++) {
 
-          if(this.cekValue(baris, kolom, num)) {
+          if(this.samping(baris, num) == true && this.bawah(kolom, num) == true && this.kotak(baris, kolom, num) == true) {
 
             papan[baris][kolom] = num
 
+            console.log(papan) // cek proses
             console.log();
-            console.log(papan)
 
             let track = this.solve()
 
@@ -52,7 +52,7 @@ class Sudoku {
 
     }
 
-    return true
+    return papan,'solved' +'\n' +' ==============================='
 
   }
 
@@ -152,12 +152,6 @@ class Sudoku {
     }
 
     return tmpPosisiNol
-
-}
-
-  cekValue(baris, kolom, num) {
-
-    return this.samping(baris, num) && this.bawah(kolom, num) && this.kotak(baris, kolom, num)
 
   }
 
