@@ -3,15 +3,24 @@
 class Sudoku {
   constructor(boardString) {
     this.board = this.generateBoard(boardString)
-    this.cordinateNull = this.findNull(boardString)
+    this.cordinateNull = this.findNull()
+  }
+
+  sleep(milliseconds){
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds) {
+        break;
+      }
+    }
   }
 
   findNull(str) {
     let count = 0;
     let arr = [];
-    for(let i=0; i<9; i++){
-      for(let j=0; j<9; j++){
-        if(str[count] == '0'){
+    for(let i=0; i<this.board.length; i++){
+      for(let j=0; j<this.board[i].length; j++){
+        if(this.board[i][j] == 0){
           arr.push([i,j])
         }
         count++;
@@ -69,32 +78,31 @@ class Sudoku {
 
   checkAllPosition(x, y, number){
     if(this.checkHorizontal(x,number) == true && this.checkVertikal(y, number) == true && this.checkKotak(x,y,number) == true){
-      console.log(`angka (${number}) - - - - - - - - - - - <<<<<< KOSONG`)
-      // this.board[x][y] = 'x'
+      // console.log(`(${x},${y}) angka (${number}) - - <<<<<< KOSONG`)
       return true;
     } else {
-      console.log(`angka (${number}) ada`)
+      // console.log(`angka (${number}) ada`)
       return false;
     }
   }
 
   solve() {
-    this.board[0][1] = 11;
-    console.log(this.cordinateNull.length)
-    // while(this.cordinateNull == null){  
+    for(let i=0; i<this.cordinateNull.length; i++){ 
+      let x = this.cordinateNull[i][0]; 
+      let y = this.cordinateNull[i][1];
       let number = 1;
-      while(number <= 9){
-        if(this.checkAllPosition(0,1,number) == true){
-          console.log(`Assign angka=${number}`)
-          
+      let status = false;
+      while(number <= 9 && status != true){
+        if(this.checkAllPosition(x,y,number) == true){
+          this.board[x][y] = number;
+          status = true;
+          console.log(this.board)
+          this.sleep(100)
         }
         number++;
       }
-    // }
+    }
   }
-
-  
-
 }
 
 
@@ -111,3 +119,4 @@ var game = new Sudoku(board_string)
 game.solve()
 
 console.log(game.board)
+// console.log(game.cordinateNull.join(' - '))
