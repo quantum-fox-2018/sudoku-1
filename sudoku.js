@@ -7,30 +7,29 @@ class Sudoku {
   }
 
   solve() {
-    for(let i = 0; i < this.zero.length; i++){
+    while (this.zero.length != 0) {
+    // for(let i = 0; i < this.zero.length; i++){
+      let i = 0;
       let r0 = this.zero[i][0];
       let c0 = this.zero[i][1];
-      // console.log('test',i);
+      i++;
       for(let j=1; j<=9; j++){
-        // console.log(this.checkkolom(j, c0));
-        // console.log(this.checkbaris(j, r0));
-        // console.log(this.checkgrid(j, r0, c0));
         if(this.checkkolom(j, c0) == true && this.checkbaris(j, r0) == true && this.checkgrid(j, r0, c0) == true){
-          // console.log('test',i);
-          this.board[r0][c0] = j
+          this.board[r0][c0] = j;
+          this.reset_board();
           console.log(this.board)
-          // break;
+          break;
         // } else {
           // console.log('test salah');
         }
       }
-      // console.log(this.checkkolom(3, c0));
+      if (this.board[r0][c0] == 9) {
+        this.board[r0][c0] = 0;
+        i -= 1;
+      }
+    // }
     }
-    // console.log(this.board[0][0]);
-
     return 'biar gak undefined HO HO HO';
-
-
   }
 
   // Returns a string representing the current state of the board
@@ -91,14 +90,18 @@ class Sudoku {
   checkgrid(num,row,col) {
     let baris = Math.floor(row/3)*3;
     let kolom = Math.floor(col/3)*3;
-    for (let i = baris; i < i+3; i++) {
-      for (let j = kolom; j < j+3; j++) {
+    for (let i = baris; i < baris+3; i++) {
+      for (let j = kolom; j < kolom+3; j++) {
         if (this.board[i][j] ==  num) {
           return false;
         }
       }
     }
     return true;
+  }
+
+  reset_board() {
+    console.log("\x1B[2J")
   }
 
 }
@@ -114,7 +117,7 @@ var game = new Sudoku(board_string)
 // console.log(board_string);
 
 // Remember: this will just fill out what it can and not "guess"
-// console.log(game.createboard());
+console.log(game.createboard());
 
 console.log(game.solve());
 // console.log(game.checkgrid(9,0,0));
